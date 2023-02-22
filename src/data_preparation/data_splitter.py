@@ -27,7 +27,7 @@ def splite_dataset(dataframe):
 
 # print(len(set(dataframe["Author"])))
 if __name__ == "__main__":
-    dataframe = pd.read_csv("../../data/SemEval/Task_A_AR/all_data.csv")
+    dataframe = pd.read_csv("../../../data/SemEval/Task_A_AR/all_data.csv")
     # dataframe = dataframe.dropna()
 
     # read_symbols_file(dataframe, "aa_data_part/normal_mut_tweets.xlsx")

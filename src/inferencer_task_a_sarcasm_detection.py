@@ -13,7 +13,7 @@ if __name__ == "__main__":
     CONFIG_CLASS = BaseConfig()
     CONFIG = CONFIG_CLASS.get_config()
 
-    MODEL_PATH = "/home/maryam.najafi/Project_Sarcasm_Detection/assets/2/version_46_best_en/checkpoints/" \
+    MODEL_PATH = "/home/maryam.najafi/Project_Sarcasm_Detection/assets/SarcasmDetection/version_46_best_en/checkpoints/" \
                  "QTag-epoch=16-val_loss=1.61.ckpt"
 
     MODEL = Classifier.load_from_checkpoint(MODEL_PATH, map_location="cuda:0")

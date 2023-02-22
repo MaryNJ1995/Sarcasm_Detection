@@ -8,8 +8,8 @@ from models.pretrain_t5 import Classifier
 
 
 def create_dataset():
-    df_train = pd.read_csv("../../data/SarcasmTweetKaggle/train.csv")
-    df_test = pd.read_csv("../../data/SarcasmTweetKaggle/test.csv")
+    df_train = pd.read_csv("../../../data/SarcasmTweetKaggle/train.csv")
+    df_test = pd.read_csv("../../../data/SarcasmTweetKaggle/test.csv")
     tweets = []
     labels = []
     for tweet, lbl in zip(df_train["tweets"], df_train["class"]):

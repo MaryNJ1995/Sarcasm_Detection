@@ -10,6 +10,10 @@
 
 import sys
 from typing import List
+import sklearn.utils.class_weight as class_weight
+import pandas as pd
+import numpy as np
+import torch
 
 
 def find_max_length_in_list(data: List[list]) -> int:
@@ -137,6 +141,30 @@ def progress_bar(index, max, postText):
     sys.stdout.flush()
 
 
-def save_lm_model(model_from_path, model_to_path):
-    model = Classifier.load_from_checkpoint(model_from_path)
-    model.model.save_pretrained(model_to_path)
+def calculate_class_weights(data: pd.DataFrame, lbl_names: List[str]) -> [dict, dict]:
+    """
+    function to calculate class weight in multi-label dataset
+    Args:
+        data: dataset
+        lbl_names: column name of labels
+
+    Returns:
+        class weight for each class
+        total class weight
+
+
+    """
+    class2weights = {}
+    all_class2weights = {}
+    for cls in lbl_names:
+        num_pos = 0
+        class_weights = class_weight.compute_class_weight(
+            "balanced",
+            classes=np.unique(data[cls]),
+            y=np.array(data[cls]))
+        class2weights[cls] = torch.Tensor(class_weights)
+        for lbl in data[cls]:
+            if lbl == 1:
+                num_pos += 1
+        all_class2weights[cls] = num_pos / len(data)
+    return class2weights, all_class2weights
