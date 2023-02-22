@@ -15,16 +15,15 @@ import numpy as np
 import pytorch_lightning as pl
 import sklearn.utils.class_weight as class_weight
 import torch
-from pytorch_lightning.callbacks import EarlyStopping
-from pytorch_lightning.loggers import CSVLogger
 import transformers
-
 from configuration import BaseConfig
 from data_loader import read_csv, write_json
 from indexer import Indexer
-from utils import normalizer
 from models import DataModule, build_checkpoint_callback
 from models.new_RCNN import Classifier
+from pytorch_lightning.callbacks import EarlyStopping
+from pytorch_lightning.loggers import CSVLogger
+from utils import normalizer
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -53,7 +52,6 @@ if __name__ == "__main__":
                              names=CONFIG.customized_headers).dropna()
     RAW_TEST_DATA.tweets = RAW_TEST_DATA.tweets.apply(lambda x: normalizer(x))
     RAW_TEST_DATA.pair_tweets = RAW_TEST_DATA.pair_tweets.apply(lambda x: normalizer(x))
-
 
     logging.debug(RAW_TRAIN_DATA.head(), RAW_VAL_DATA.head(), RAW_TEST_DATA.head())
     logging.debug("length of Train data is: {}".format(len(RAW_TRAIN_DATA)))
@@ -105,7 +103,8 @@ if __name__ == "__main__":
     DATA_MODULE.setup()
 
     CHECKPOINT_CALLBACK = build_checkpoint_callback(CONFIG.save_top_k)
-    CHECKPOINT_CALLBACK_F1 = build_checkpoint_callback(CONFIG.save_top_k, monitor="val_f1_second_class",
+    CHECKPOINT_CALLBACK_F1 = build_checkpoint_callback(CONFIG.save_top_k,
+                                                       monitor="val_f1_second_class",
                                                        mode="max")
     EARLY_STOPPING_CALLBACK = EarlyStopping(monitor="val_loss", patience=30, mode="min")
 

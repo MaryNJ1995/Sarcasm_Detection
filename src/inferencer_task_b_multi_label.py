@@ -1,13 +1,13 @@
 import os
-from torch.utils.data import DataLoader
-import transformers
-from sklearn.metrics import classification_report
 
+import transformers
 from configuration import BaseConfig
 from data_loader import read_csv
-from models.multilabel_tmp import Classifier
 from inference import Inference, InferenceDataset, PairSarcasmDataset, \
     MultiSarcasmDataset
+from models.multilabel_tmp import Classifier
+from sklearn.metrics import classification_report
+from torch.utils.data import DataLoader
 
 # from utils import progress_bar
 
@@ -16,7 +16,8 @@ if __name__ == "__main__":
     CONFIG_CLASS = BaseConfig()
     CONFIG = CONFIG_CLASS.get_config()
 
-    MODEL_PATH = "../assets/saved_models/t5_large/version_8/checkpoints/QTag-epoch=06-val_loss=0.53.ckpt"
+    MODEL_PATH = "../assets/saved_models/t5_large/version_8/checkpoints/" \
+                 "QTag-epoch=06-val_loss=0.53.ckpt"
 
     MODEL = Classifier.load_from_checkpoint(MODEL_PATH, map_location="cuda:1")
     MODEL.eval().to("cuda:1")
@@ -52,7 +53,7 @@ if __name__ == "__main__":
         sample_batched["inputs_ids"] = sample_batched["inputs_ids"].to("cuda:1")
         # OUTPUT, _ = INFER.predict(sample_batched)
         output_sarcasm, output_irony, output_satire, output_understatement, \
-        output_overstatement, output_rhetorical_question = INFER.predict_multi(sample_batched)
+            output_overstatement, output_rhetorical_question = INFER.predict_multi(sample_batched)
         PREDICTED_SARCASM.extend(output_sarcasm)
         PREDICTED_IRONY.extend(output_irony)
         PREDICTED_SATIRE.extend(output_satire)
@@ -71,14 +72,18 @@ if __name__ == "__main__":
     report = classification_report(y_true=list(RAW_DATA.satire), y_pred=PREDICTED_SATIRE,
                                    target_names=["not_satire", "is_satire"])
     print(report)
-    report = classification_report(y_true=list(RAW_DATA.understatement), y_pred=PREDICTED_UNDERSTATEMENT,
+    report = classification_report(y_true=list(RAW_DATA.understatement),
+                                   y_pred=PREDICTED_UNDERSTATEMENT,
                                    target_names=["not_understatement", "is_understatement"])
     print(report)
-    report = classification_report(y_true=list(RAW_DATA.overstatement), y_pred=PREDICTED_OVERSTATEMENT,
+    report = classification_report(y_true=list(RAW_DATA.overstatement),
+                                   y_pred=PREDICTED_OVERSTATEMENT,
                                    target_names=["not_overstatement", "is_overstatement"])
     print(report)
-    report = classification_report(y_true=list(RAW_DATA.rhetorical_question), y_pred=PREDICTED_RHETORICAL_QUESTION,
-                                   target_names=["not_rhetorical_question", "is_rhetorical_question"])
+    report = classification_report(y_true=list(RAW_DATA.rhetorical_question),
+                                   y_pred=PREDICTED_RHETORICAL_QUESTION,
+                                   target_names=["not_rhetorical_question",
+                                                 "is_rhetorical_question"])
     print(report)
 
     # FILE.write("task_a_en")

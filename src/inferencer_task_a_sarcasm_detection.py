@@ -1,19 +1,20 @@
 import os
 
 import transformers
-from torch.utils.data import DataLoader
-from sklearn.metrics import classification_report
 from configuration import BaseConfig
 from data_loader import read_csv
 from inference import Inference, InferenceDataset
 from models.sar_RCNN import Classifier
+from sklearn.metrics import classification_report
+from torch.utils.data import DataLoader
 from utils import progress_bar
 
 if __name__ == "__main__":
     CONFIG_CLASS = BaseConfig()
     CONFIG = CONFIG_CLASS.get_config()
 
-    MODEL_PATH = "/home/maryam.najafi/Project_Sarcasm_Detection/assets/SarcasmDetection/version_46_best_en/checkpoints/" \
+    MODEL_PATH = "/home/maryam.najafi/Project_Sarcasm_Detection/" \
+                 "assets/SarcasmDetection/version_46_best_en/checkpoints/" \
                  "QTag-epoch=16-val_loss=1.61.ckpt"
 
     MODEL = Classifier.load_from_checkpoint(MODEL_PATH, map_location="cuda:0")

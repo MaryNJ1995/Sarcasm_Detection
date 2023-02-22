@@ -6,22 +6,23 @@ trainer module is written for train model in task A and C
 # ============================ Third Party libs ============================
 import logging
 import os
+
 import numpy as np
 import pytorch_lightning as pl
-from sklearn.utils import class_weight
 import torch
-from pytorch_lightning.callbacks import EarlyStopping
-from pytorch_lightning.loggers import CSVLogger
-from tabulate import tabulate
-from transformers import T5Tokenizer
 # ============================ My packages ============================
 from configuration import BaseConfig
 from data_loader import read_csv, write_json
 from data_preparation import normalize_text
+from dataset import DataModule
 from indexer import Indexer
 from models import build_checkpoint_callback
 from models.task_a_c_model import Classifier
-from dataset import DataModule
+from pytorch_lightning.callbacks import EarlyStopping
+from pytorch_lightning.loggers import CSVLogger
+from sklearn.utils import class_weight
+from tabulate import tabulate
+from transformers import T5Tokenizer
 
 logging.basicConfig(level=logging.DEBUG)
 

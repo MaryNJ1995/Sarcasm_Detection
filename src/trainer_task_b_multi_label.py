@@ -6,18 +6,18 @@ trainer module is written for train model in task B
 # ============================ Third Party libs ============================
 import logging
 import os
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks import EarlyStopping
-from pytorch_lightning.loggers import CSVLogger
-import transformers
 
+import pytorch_lightning as pl
+import transformers
 # ============================ My packages ============================
 from configuration import BaseConfig
 from data_loader import read_csv, write_json
 from data_preparation import normalize_text
+from dataset import MultiDataModule
 from models import build_checkpoint_callback
 from models.task_b_model import Classifier
-from dataset import MultiDataModule
+from pytorch_lightning.callbacks import EarlyStopping
+from pytorch_lightning.loggers import CSVLogger
 from utils import calculate_class_weights
 
 logging.basicConfig(level=logging.DEBUG)

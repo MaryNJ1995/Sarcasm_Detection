@@ -1,15 +1,15 @@
 import os
-import numpy as np
-from torch.utils.data import DataLoader
-import transformers
-from sklearn.metrics import classification_report
 
+import numpy as np
+import transformers
 from configuration import BaseConfig
 from data_loader import read_csv
+from inference import Inference, InferenceDataset
 from models.sar_t5_transformers import Classifier as model_1
 from models.t5_cnn import Classifier as model_2
 from models.t5_lstm import Classifier as model_3
-from inference import Inference, InferenceDataset
+from sklearn.metrics import classification_report
+from torch.utils.data import DataLoader
 
 # from utils import progress_bar
 
@@ -46,13 +46,16 @@ if __name__ == "__main__":
         print("OK")
         if index == 0:
             print(path)
-            MODEL = model_1.load_from_checkpoint(os.path.join(MAIN_PATH, path), map_location="cuda:1")
+            MODEL = model_1.load_from_checkpoint(os.path.join(MAIN_PATH, path),
+                                                 map_location="cuda:1")
         elif index == 1:
             print(path)
-            MODEL = model_2.load_from_checkpoint(os.path.join(MAIN_PATH, path), map_location="cuda:1")
+            MODEL = model_2.load_from_checkpoint(os.path.join(MAIN_PATH, path),
+                                                 map_location="cuda:1")
         else:
             print(path)
-            MODEL = model_3.load_from_checkpoint(os.path.join(MAIN_PATH, path), map_location="cuda:1")
+            MODEL = model_3.load_from_checkpoint(os.path.join(MAIN_PATH, path),
+                                                 map_location="cuda:1")
 
         MODEL.eval().to("cuda:1")
 
